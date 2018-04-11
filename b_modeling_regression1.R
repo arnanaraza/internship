@@ -4,26 +4,9 @@ pacman::p_load(stats, gstat, raster,rgdal, rgeos, maptools, ranger, neuralnet)
 mydir <- setwd('/home/sarvision/Desktop/BiomassPhilippines')
 
 
-# Open main rasters, all should be located at 'mid-results' folder
-allfiles <- list.files('/home/sarvision/Desktop/BiomassPhilippines/mid-results',pattern='.tif' )
-setwd('/home/sarvision/Desktop/BiomassPhilippines/mid-results')
-landsat <- stack(allfiles[[3]])
-palsar <- stack(allfiles[[1]])
-names(palsar) <- c('hh1', 'hv1', 'hh2', 'hv2')
-setwd(mydir)
-
-
-# Load and prepare training-test data
- ## load nfi at SPDF
-
-# Open all reclassified plots
-td.s <- readOGR(dsn =paste0(mydir,'/mid-results/'), layer = "bio14a")
-td.samp <- as.data.frame(td.s[,c(1:2)]) #change td.mask to td.14 for national-scale test 
-td.samp1 <- td.samp[1:2]
-
-
 # Load covariates
 LoadCov <- function(cov){
+  
   
 }
 

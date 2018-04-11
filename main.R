@@ -1,12 +1,13 @@
 ### Main script to call all sub-scripts ###
 
-# Preliminaries
+## Preliminaries
 rm(list=ls()) 
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(unixtools)
 mydir <- ('/media/sarvision/InternshipFilesAraza/BiomassPhilippines') #just change if working with Windows
 setwd(mydir)
 unixtools::set.tempdir('/media/sarvision/InternshipFilesAraza/test/')
+
 
 
 ## Mask and mosaic* pre-processed PALSAR and Sentinel 1 from external directory 
@@ -18,68 +19,90 @@ palsar <- PalsarFiles('bin',  paste0(extdir,'/Projects/Phillippines_All/Philippi
 landsat <- LandsatFiles('tif', 'last',  paste0(extdir,'Projects/Phillippines_All/Philippines_Landsat'))
 dem <- DEMFiles('bin',  paste0(extdir,'/SRTM/SRTM_Whole_Philippines_30m'))
 lcov <-LcovFiles('tif', paste0(mydir, '/data/LandCover2014'))
-#### mask layer (ph_bounds) not yet in drive
+#### mask layer (ph_bounds) not yet in drive ####
 setwd(mydir)
-
 
 ## Open pre-processed rasters 
 
 #Open list of rasters
 setwd(paste0(mydir,'/scripts/'))
 source('a_openfiles.R')
-  #Open stand alone rasters - DEM and Land Cover
-  RasFiles <- FolderFiles ('raw', 'tif')
-  LcovFiles <- list.files(RasFiles[2])
-  setwd(RasFiles[2])
-  lcov <- raster(LcovFiles[2]) 
-  
-  
-  #Open "satellite rasters"
-  RasFiles <- FolderFiles ('intermediate', 'tif')
+#Open stand alone rasters - DEM and Land Cover
+RasFiles <- FolderFiles ('raw', 'tif')
+LcovFiles <- list.files(RasFiles[2])
+setwd(RasFiles[2])
+lcov <- raster(LcovFiles[2]) 
 
-    #Stack each main input (landsat, palsar, sentinel1)
-    landsat <- stack(RasFiles[[3]])
-    names(landsat) <- c("red" ,  "nir",   "swir1", "swir2")
-    palsar <- stack(RasFiles[[6]])
-    names(palsar) <- c('hh1', 'hv1', 'hh2', 'hv2')
-    s1 <- stack(RasFiles[[5]])
-    names(s1) <- c('min.vh', 'min.vv', 'mean.vh', 'mean.vv', 'max.vh', 'max.vv', 'sd.vh', 
-                   'sd.vv', 'range.vh', 'range.vv', 'variab.vh', 'variab.vv')
-    dem <- raster(RasFiles[1])
+#Open "satellite rasters"
+RasFiles <- FolderFiles ('intermediate', 'tif')
 
-## Resample at 25m except for palsar and s1 
+#Stack each main input (landsat, palsar, sentinel1)
+landsat <- stack(RasFiles[[3]])
+names(landsat) <- c("red" ,  "nir",   "swir1", "swir2")
+palsar <- stack(RasFiles[[6]])
+names(palsar) <- c('hh1', 'hv1', 'hh2', 'hv2')
+s1 <- stack(RasFiles[[5]])
+names(s1) <- c('min.vh', 'min.vv', 'mean.vh', 'mean.vv', 'max.vh', 'max.vv', 'sd.vh', 
+               'sd.vv', 'range.vh', 'range.vv', 'variab.vh', 'variab.vv')
+dem <- raster(RasFiles[1])
+
+
+
+## Use test masks (***OPTIONAL***)
 setwd(paste0(mydir,'/scripts/'))
-source('a_resample_rasters.R') 
-lp <- PP.Rasters (landsat, palsar[[1]])
-landsat <- lp[[1:4]]
-#lps <- PP.Rasters (s1, lp)
-s <- PP.Rasters(s1, palsar[[1]])
-s1 <- s[[1:4]]
-d <- PP.Rasters (dem, palsar[[1]])
-dem <- d[[1]]
-setwd(mydir)
+source('zz_test_mask.R')
+l.mask <- MaskForTest (landsat)
+p.mask <- MaskForTest(palsar)
+s.mask <- MaskForTest(s1)
+d.mask <- MaskForTest(dem)
+lc.mask <- MaskForTest(lcov)
 
-## Downscale resolution of rasters (***OPTIONAL***)
+
+## Downscale resolution of rasters (***OPTIONAL***)    
 setwd(paste0(mydir,'/scripts/'))
 source('a_downscale_rasters.R') 
-res <- 25
+res <- 1000
+landsat.1km <- ResRas(landsat, res)
 setwd(mydir)
 
-## Create and stack other covariates. Create vegetation indices, polarization ratios, add land cover, etc.)
-#vegetation indices, texture, and dual-pol ratio
+
+## Resample everything (slave) using s1 (master) at 25m 
 setwd(paste0(mydir,'/scripts/'))
-source('a_texture_VIs.R') 
-all.optical <- RasProd(landsat,'landsat')
-all.palsar <- RasProd(palsar, 'palsar')
-all.s1 <- RasProd(s1, 's1')
-all.dem <- RasProd(d, 'dem')
-all.lcov <- RasProd(lcov, 'lcov')
+beginCluster(n=6)
+landsat <- resample(landsat, s1[[1]], method='ngb')
+palsar <- resample (palsar, s1[[1]], method='ngb')
+dem <- resample (dem, s1[[1]], method='ngb')
+endCluster()
+
+
+## Create and stack other covariates(vegetation indices, polarization ratios, slope from DEM, and NA-free land cover)
+#vegetation indices, and dual-pol ratio
+setwd(paste0(mydir,'/scripts/'))
+source('a_VIs_ratios.R') 
+l.intr <- RasProd(landsat,'landsat')
+p.intr <- RasProd(palsar, 'palsar')
+s.intr <- RasProd(s1, 's1')
+d.intr <- RasProd(d, 'dem')
+lc.intr <- RasProd(lcov, 'lcov')
 setwd(mydir)
+
+#texture
+source('a_VIs_ratios.R') 
+s.intr <- subset(s.intr, order(c(1,3,2,4,5,6,7,8,9,10,11,12))) #re-arrange layer so all texture source band in layer 2
+r.list <- list (l.intr,p.intr,s.intr)
+all.tex <- TexProd (r.list, 9, 2)
 
 
 ## Stack everything
-all <- stack(all.optical, all.palsar, all.s1, all.dem)
-#names(all) <- 
+beginCluster(n=6)
+all.covs <- stack(l.intr, p.intr, s.intr, all.dem, d.intr, lc.intr) #add r.list check first)
+writeRaster(all.covs,  'all.tif')
+names(all) <- c("red" ,  "nir",   "swir1", "swir2", "ndvi",  "savi"  ,"evi",  
+                'rvi', "wdvi", 'svi','hh1', 'hv1', 'hh2', 'hv2', 'hv/hh1', 'hv/hh2',
+                'min.vh', 'min.vv', 'mean.vh', 'mean.vv', 'max.vh', 'max.vv', 'sd.vh', 
+                'sd.vv', 'range.vh', 'range.vv', 'variab.vh', 'variab.vv','vh/vv',
+                'dem', 'slope','lcov','tex.lsat','tex.pals','tex.s1')
+endCluster()
 
 
 ## Compute biomass per plot at adapting to allometric equation 
