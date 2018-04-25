@@ -1,7 +1,9 @@
-
+if (!require("pacman")) install.packages("pacman")
+pacman::p_load(classify)
+               
 # Compute biomass pixels at covariates resolution and write it
 BiomassPixel <- function(spdf, str, resolution) {
-  spdf$biomass.fin <- spdf$biomass * ((resolution*resolution)/(250*20)) #250*20 is the survey plot size
+  spdf$biomass.fin <- spdf$biomass.total * ((resolution*resolution)/(250*20)) #250*20 is the survey plot size
   spdf$biomass.ton <- spdf$biomass.fin/1000
   print(summary(spdf$biomass.ton))
   if (str == 03){write.csv(spdf, paste0(mydir,'/mid-results/td03',resolution,'.csv'))}
@@ -13,4 +15,4 @@ BiomassPixel <- function(spdf, str, resolution) {
 
 
 # Reclassify biomass values into 12 classes using quantile classification
-## done using "reclassify" tool of ArcMap, will figure out how to do it here
+## done using "reclassify" tool of ArcMap, 

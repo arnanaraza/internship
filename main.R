@@ -6,7 +6,8 @@ if (!require("pacman")) install.packages("pacman")
 pacman::p_load(unixtools)
 mydir <- ('/media/sarvision/InternshipFilesAraza/BiomassPhilippines') #just change if working with Windows
 setwd(mydir)
-unixtools::set.tempdir('/media/sarvision/InternshipFilesAraza/test/')
+dir.create(file.path('/media/sarvision/InternshipFilesAraza/tempfiles'), showWarnings = FALSE)
+unixtools::set.tempdir('/media/sarvision/InternshipFilesAraza/tempfiles')
 
 
 ## Mask and mosaic* pre-processed PALSAR and Sentinel 1 from external directory 
@@ -44,21 +45,25 @@ s1 <- stack(RasFiles[[5]])
 names(s1) <- c('min.vh', 'min.vv', 'mean.vh', 'mean.vv', 'max.vh', 'max.vv', 'sd.vh', 
                'sd.vv', 'range.vh', 'range.vv', 'variab.vh', 'variab.vv')
 dem <- raster(RasFiles[1])
-
-
-
-## Use test masks (***OPTIONAL***)
-setwd(paste0(mydir,'/scripts/'))
-source('zz_test_mask.R')
-t.list <- list(landsat,palsar,s1,dem,lcov)
-n.list <- c('landsat','palsar','s1','dem','lcov')
-t.mask <- MaskForTestPar1(t.list, n.list)
-landsat <- t.mask[[1]]
-palsar <- t.mask[[2]]
-s1 <- t.mask[[3]]
-dem <- t.mask[[4]]
-lcov <- t.mask [[5]]
-setwd(mydir)
+  
+  
+    ## Use test masks (***OPTIONAL***)
+    setwd(paste0(mydir,'/scripts/'))
+    t.list <- list(landsat,palsar,s1,dem,lcov)
+    n.list <- c('l.mask','p.mask','s.mask','d.mask','lc.mask')
+    source('zz_test_mask.R')
+    start.time <- Sys.time()
+    t.mask <- MaskForTestPar1(t.list, n.list)
+    end.time <- Sys.time()
+    time.taken <- end.time - start.time
+    time.taken
+    
+    landsat <- t.mask[[1]]
+    palsar <- t.mask[[2]]
+    s1 <- t.mask[[3]]
+    dem <- t.mask[[4]]
+    lcov <- t.mask [[5]]
+    setwd(mydir)
 
     #texture
     intr.files <- list.files(paste0(mydir, '/temp'),pattern='.tif')
@@ -76,7 +81,7 @@ setwd(mydir)
     ## Downscale resolution of rasters (***OPTIONAL***)    
     setwd(paste0(mydir,'/scripts/'))
     source('a_downscale_rasters.R') 
-    res <- 1000
+    res <- 25
     landsat.1km <- ResRas(landsat, res)
     setwd(mydir)
 
@@ -112,16 +117,6 @@ closeAllConnections()
   r.list <- list(l.intr,p.intr,s.intr,d.intr)  
   each.name <- c('l.intr.msk', 'p.intr.msk', 's.intr.msk', 'd.intr.msk')
   write.intr <- WriteRas(r.list,each.name)
-
-  #open intr rasters
-  intr.files <- list.files(paste0(mydir, '/mid-results/subprod'),pattern='.tif')
-  setwd(paste0(mydir, '/mid-results/subprod'))
-  l.intr <- stack(intr.files[[3]])
-  p.intr <- stack(intr.files[[5]])
-  s.intr <- stack(intr.files[[7]])
-  d.intr <- stack(intr.files[[1]])
-  setwd(mydir)
-  
   
   
 #texture
@@ -131,19 +126,111 @@ r.list <- list (landsat,palsar,s1)
 n.list <- c('ĺ.tex', 'p.tex', 's.tex')
 asdf <- TexProd1 (r.list, 3, n.list)
 closeAllConnections()
+  
+#open intr rasters
+library(raster)
+intr.files <- list.files(paste0(mydir, '/mid-results/subprod'),pattern='.tif')
+setwd(paste0(mydir, '/mid-results/subprod'))
+l.intr <- stack(intr.files[[5]])
+p.intr <- stack(intr.files[[12]])
+s.intr <- stack(intr.files[[19]])
+d.intr <- stack(intr.files[[1]])
+l.tex <- stack(intr.files[[10]])
+p.tex <- stack(intr.files[[17]])
+s.tex <- stack(intr.files[[24]])
+tex.names <- c("mean", "variance", "homogeneity", "contrast", "dissimilarity", "entropy", 
+                 "second_moment", "correlation")
+names(l.tex) <- tex.names
+names(p.tex) <- tex.names
+names(s.tex) <- tex.names
+setwd(mydir)
+  
+  
+    ## Use test masks (***OPTIONAL***)
+    setwd(paste0(mydir,'/scripts/'))
+    t.list <- list(l.intr,p.intr,s.intr,d.intr,l.tex,p.tex,s.tex)
+    n.list <- c('l.intr','p.intr','s.intr','d.intr','l.tex','p.tex','s.tex')
+    source('zz_test_mask.R')
+    start.time <- Sys.time()
+    all.mask <- MaskForTestPar1(t.list, n.list)
+    end.time <- Sys.time()
+    time.taken <- end.time - start.time
+    time.taken
+    setwd(mydir)
 
+    #open masked rasters
+    library(raster)
+    intr.files.mask <- list.files(paste0(mydir, '/temp/allmask'),pattern='.tif')
+    setwd(paste0(mydir, '/temp/allmask'))
+    l.intr.mask <- stack(intr.files.mask[[2]])
+    p.intr.mask <- stack(intr.files.mask[[4]])
+    s.intr.mask <- stack(intr.files.mask[[6]])
+    d.intr.mask <- stack(intr.files.mask[[1]])
+    l.tex.mask <- stack(intr.files.mask[[3]])
+    p.tex.mask <- stack(intr.files.mask[[5]])
+    s.tex.mask <- stack(intr.files.mask[[7]])
+
+    #resample masked samples if stackable
+    setwd(paste0(mydir,'/scripts/'))
+    source('a_resample.R')
+    all.raw.mask <- list(l.intr.mask, p.intr.mask,s.intr.mask,d.intr.mask,l.tex.mask,p.tex.mask,s.tex.mask)
+    all.raw.names <- c('l.intr.mask', 'p.intr.mask','s.intr.mask','d.intr.mask','l.tex.mask','p.tex.mask','s.tex.mask')
+    start.time <- Sys.time()
+    all.res <- ResTex1(all.raw.mask,all.raw.names)
+    end.time <- Sys.time()
+    time.taken <- end.time - start.time
+    time.taken
+    closeAllConnections()
+    
+    #open resampled rasters
+    library(raster)
+    intr.files.mask <- list.files(paste0(mydir, '/mid-results/stackable'),pattern='.tif')
+    setwd(paste0(mydir, '/mid-results/stackable'))
+    l.intr.mask <- stack(intr.files.mask[[2]])
+    p.intr.mask <- stack(intr.files.mask[[4]])
+    s.intr.mask <- stack(intr.files.mask[[6]])
+    d.intr.mask <- stack(intr.files.mask[[1]])
+    l.tex.mask <- stack(intr.files.mask[[3]])
+    p.tex.mask <- stack(intr.files.mask[[5]])
+    s.tex.mask <- stack(intr.files.mask[[7]])
+    
+    test.stack <- stack(l.intr.mask, p.intr.mask,s.intr.mask,d.intr.mask,l.tex.mask,p.tex.mask,s.tex.mask)
+    
 #resample
+setwd(paste0(mydir,'/scripts/'))
+source('a_resample.R')
 all.intr <- list(l.intr, p.intr, s.intr,d.intr)
+all.tex <- list(l.tex,p.tex,s.tex)
 all.raw <- do.call(c, list(all.intr,all.tex)) 
+n.list <- c('l.intr.res','p.intr.res','s.intr.res','d.intr.res','l.tex.res','p.tex.res','s.tex.res')
+
+  #palsar separate
+  pals.res <- list(p.intr,p.tex,s.tex)
+  pals.name <- c('p.intr.res', 'p.tex.res', 's.tex.res1')
+  pals.res <- ResTex1(pals.res,pals.name, s.intr)
+  
 start.time <- Sys.time()
-all.res <- ResTex(all.raw)
+all.res <- ResTex1(all.raw, n.list)
 end.time <- Sys.time()
 time.taken <- end.time - start.time
 time.taken
 closeAllConnections()
 
+#open final rasters
+library(raster)
+final.files <- list.files(paste0(mydir, '/mid-results/stackable'),pattern='.tif')
+setwd(paste0(mydir, '/mid-results/stackable'))
+l.fin <- stack(final.files[[3]])
+#p.fin <- stack(final.files[[12]])
+s.fin <- stack(final.files[[5]])
+d.fin <- stack(final.files[[2]])
+lt.fin <- stack(final.files[[4]])
+#pt.fin <- stack(final.files[[5]])
+st.fin <- stack(final.files[[7]])
+
 #stack everything
-all.covs <- stack(all.res)
+all.files <- list(l.fin,s.fin,d.fin,lt.fin,st.fin)
+all.covs <- stack(all.files)
 writeRaster(all.covs,  'all.tif')
 names1 <- c("red",  "nir",   "swir1", "swir2", "ndvi",  "savi"  ,"evi",  
             'rvi', "wdvi", 'svi','hh1', 'hv1', 'hh2', 'hv2', 'hv/hh1', 'hv/hh2',

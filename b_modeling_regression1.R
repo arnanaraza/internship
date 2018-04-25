@@ -12,7 +12,7 @@ LoadCov <- function(cov){
 
 # Extract values from td locations 
 #samp reg
-pixel.value <- as.data.frame(extract(landsat, td.samp1))
+pixel.value <- as.data.frame(extract(all.covs, td))
 td <- cbind(pixel.value, td.s$bio_class)
 names(td) <- c('red', 'nir', 'swir', 'swir1', 'biomass')
 #samp rf

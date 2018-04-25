@@ -19,17 +19,18 @@ MaskForTest <- function(raster) {
 
 MaskForTestPar <- function(r_list) {
   
-  msk <- readOGR(dsn =paste0(mydir,'/temp/'), layer = "ldb")
+  msk <- readOGR(dsn =paste0(mydir,'/temp/'), layer = "test_mask3")
   
   # Use cores
   UseCores <- detectCores() -1
   cl<- makeSOCKcluster(UseCores)
   registerDoSNOW(cl)
-
+  
   # Parallel per raster 
   return(foreach (i=1:length(r_list), .packages='raster')  %dopar% { 
     mask(crop(r_list[[i]], extent(msk)), msk)})
   
+  unlink(file.path(tempdir()), recursive = TRUE,force = TRUE) #delete temporary files
   stopCluster(cl)
   
 }
@@ -41,17 +42,17 @@ registerDoSNOW(cl)
 
 MaskForTestPar1 <- function(r_list, n_list) {
   
-  msk <- readOGR(dsn =paste0(mydir,'/temp/'), layer = "ldb")
+  msk <- readOGR(dsn =paste0(mydir,'/temp/'), layer = "test_mask3")
 
   
   # Parallel per raster 
   foreach (i=1:length(r_list), .packages='raster')  %dopar% { 
-    rasterOptions(tmpdir=file.path("/media/sarvision/InternshipFilesAraza/test/"))  #sets temp directory - this is important b/c it can fill up a hard drive if you're doing a lot of polygons
+    rasterOptions(tmpdir=file.path(tempdir()))  #sets temp directory - this is important b/c it can fill up a hard drive if you're doing a lot of polygons
     ras <- mask(crop(r_list[[i]], extent(msk)), msk)
-    setwd('/media/sarvision/InternshipFilesAraza/BiomassPhilippines/temp')
+    setwd('/media/sarvision/InternshipFilesAraza/BiomassPhilippines/temp/allmask')
     writeRaster(ras, paste0(n_list[[i]],'.tif'), overwrite=T)
   }
-  unlink(file.path("/media/sarvision/InternshipFilesAraza/test/"), recursive = TRUE,force = TRUE) #delete temporary files
+  unlink(file.path(tempdir()), recursive = TRUE,force = TRUE) #delete temporary files
 stopCluster(cl)
   }
 
