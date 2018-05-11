@@ -38,7 +38,10 @@ lcov <- raster(LcovFiles[2])
 RasFiles <- FolderFiles ('intermediate', 'tif')
 #Stack each main input (landsat, palsar, sentinel1)
 landsat <- stack(RasFiles[[3]])
+landsat03 <- stack(RasFiles[[2]])
 names(landsat) <- c("red" ,  "nir",   "swir1", "swir2")
+names(landsat03) <- c("red" ,  "nir",   "swir1", "swir2")
+
 palsar <- stack(RasFiles[[6]])
 names(palsar) <- c('hh1', 'hv1', 'hh2', 'hv2')
 s1 <- stack(RasFiles[[5]])
@@ -103,6 +106,11 @@ source('a_VIs_ratios.R')
 system.time(tahoe_ndvi <- focal_hpc(x=landsat, fun=RasProd(landsat, 'landsat')))
 start.time <- Sys.time()
 l.intr <- RasProd(landsat,'landsat')
+l.intr.03 <- RasProd(landsat03,'landsat')
+setwd(paste0(mydir, '/mid-results/subprod'))
+writeRaster(l.intr.03, 'l.intr03.tif')
+setwd(mydir)
+
 p.intr <- RasProd(palsar, 'palsar')
 s.intr <- RasProd(s1, 's1')
 d.intr <- RasProd(dem, 'dem')
@@ -128,7 +136,7 @@ asdf <- TexProd1 (r.list, 3, n.list)
 closeAllConnections()
   
 #open intr rasters
-library(raster)
+library(raster, rgdal, rgeos)
 intr.files <- list.files(paste0(mydir, '/mid-results/subprod'),pattern='.tif')
 setwd(paste0(mydir, '/mid-results/subprod'))
 l.intr <- stack(intr.files[[5]])
@@ -138,6 +146,7 @@ d.intr <- stack(intr.files[[1]])
 l.tex <- stack(intr.files[[10]])
 p.tex <- stack(intr.files[[17]])
 s.tex <- stack(intr.files[[24]])
+
 tex.names <- c("mean", "variance", "homogeneity", "contrast", "dissimilarity", "entropy", 
                  "second_moment", "correlation")
 names(l.tex) <- tex.names
@@ -181,6 +190,8 @@ setwd(mydir)
     time.taken <- end.time - start.time
     time.taken
     closeAllConnections()
+
+    
     
     #open resampled rasters
     library(raster)
@@ -203,6 +214,20 @@ all.intr <- list(l.intr, p.intr, s.intr,d.intr)
 all.tex <- list(l.tex,p.tex,s.tex)
 all.raw <- do.call(c, list(all.intr,all.tex)) 
 n.list <- c('l.intr.res','p.intr.res','s.intr.res','d.intr.res','l.tex.res','p.tex.res','s.tex.res')
+
+fin.files <- list.files(paste0(mydir, '/temp'),pattern='.tif')
+setwd(paste0(mydir, '/temp'))
+f.fin <- raster(fin.files[[10]])
+f.finc <- crop(f.fin,extent(l.fin[[1]]))
+f.finm <- mask(f.finc, l.fin[[1]])
+f.finr <- resample(f.finc, l.fin[[1]])
+setwd(paste0(mydir, '/mid-results/stackable'))
+writeRaster(f.finr,'fmask2.tif',overwrite=T)
+
+fin.files <- list.files(paste0(mydir, '/mid-results/subprod'),pattern='.tif')
+setwd(paste0(mydir, '/mid-results/subprod'))
+s.fin <- stack(fin.files[[38]])
+s.fin <- s.fin[[3:4]]
 
   #palsar separate
   pals.res <- list(p.intr,p.tex,s.tex)
@@ -254,24 +279,71 @@ all.plots.14 <- NFI('Chave14', 14,'no')
 
 ## Adjust biomass according to raster input resolution
 setwd(paste0(mydir,'/scripts/'))
+res <- 25
 source('a_biomass-resolution_match.R') 
 td.03 <- BiomassPixel(all.plots.03, 03, res)
 td.14 <- BiomassPixel(all.plots.14, 14, res)
 
 
 ## Open reclassified plots
-td <- readOGR(dsn =paste0(mydir,'/mid-results/'), layer = "bio14a")
-td <- as.data.frame(td[,c(1:2)]) #change td.mask to td.14 for national-scale test 
-td <- td[1:2]
+setwd(paste0(mydir,'/scripts/'))
+source('a_reclassify_biomass.R') 
+td.03.rec <- RecPlot (td.03, 5, 'quantile')
+bubble(td.03.rec, zcol='bioclass', main=paste0('biomass (t/ha)'))
+td.14.rec <- RecPlot (td.14, 5, 'quantile') #choice of 5, 8, 12, 15, 20
+bubble(td.14.rec, zcol='bioclass', main=paste0('biomass (t/ha)'))
 
+  #remove erroneous plots
+  setwd(paste0(mydir,'/scripts/'))
+  source('a_remove_erroneous.R') 
+  td.14.noerr <- NoErr (td.14)
+  #reclassify 
+  td.14.rec <- RecPlot(td.14.noerr, 4, 'quantile') #choice of 5, 8, 12, 15, 20
 
-## Modeling proper
+  #create pseudo TD ***OPTIONAL***
+  setwd(paste0(mydir,'/scripts/'))
+  source('b_pseudoTD.R')
+  wtih345 <- PTD(td.14.rec, 5, 'ptd_ver1', 50)
+  
+
+## Assemble covariates  
+setwd(paste0(mydir,'/scripts/'))
+source('b_covs_assembly.R') 
+vt.14 <- ExtractInfo(td.14.rec, 4, 'yes', 'yes', 'all') # arguments are: spdf, classes, buffer?, fmask?, covs
+  
+  #create VT per covs selection
+  vt.ps <- ExtractInfo(td.14.rec, 4, 'yes', 'yes', 'ps')
+  vt.lp <- ExtractInfo(td.14.rec, 4, 'yes', 'yes', 'lp')
+  vt.l <- ExtractInfo(td.14.rec, 4, 'yes', 'yes', 'l')
+  vt.p <- ExtractInfo(td.14.rec, 4, 'yes', 'yes', 'p')
+  vt.s <- ExtractInfo(td.14.rec, 4, 'yes', 'yes', 's')
+
+  
+  
+  
+## Train valuetable
 setwd(paste0(mydir,'/scripts/'))
 source('b_train-test.R') 
 
+  #get best model 
+  models <- c('rf', 'nnet', 'svmRadial') 
+  all.ml <- lapply (models, function(x) TrainCovs(vt.14, x, 'cv', 'no'))  # arguments are: VT, model, cross-validation, parallel?
+  all.ml
+  names(all.covs) <- names(vt.14[-1])
+  all.pred <- lapply (all.ml, function(x) predict(all.covs, x, na.rm=T))
+  setwd('/media/sarvision/InternshipFilesAraza/BiomassPhilippines/mid-results/test_predictions')
+  lapply (all.pred, function(x) writeRaster(x, paste0('pred5_q_50_', x ,'.tif')))
+  setwd(mydir)
+  
 
-
-#multiple linear regression
-#random forest
-#neural network
-
+## Train per covs input
+  
+  
+  
+  rf.ps <- TrainCovs(vt.ps, 'rf', 'LOOCV', 'no')
+  rf.lp <- TrainCovs(vt.lp, 'rf', 'LOOCV', 'no')
+  rf.l <- TrainCovs(vt.l, 'rf', 'LOOCV', 'no')
+  rf.p <- TrainCovs(vt.p, 'rf', 'LOOCV', 'no')
+  rf.s <- TrainCovs(vt.s, 'rf', 'LOOCV', 'no')
+  rf.s <- TrainCovs(vt.s, 'rf', 'cv', 'no')
+  

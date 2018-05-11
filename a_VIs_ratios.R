@@ -9,6 +9,18 @@ RasProd <- function(satellite, sat.str) {
   
   if (sat.str == 'landsat') {
    # beginCluster(n=cores)
+    ndvCalc <- function(x) {
+      ndvi <- (satellite[[2]] - satellite[[1]]) / (satellite[[2]] + satellite[[1]])
+      return(ndvi)
+    }
+    satellite$ndvi <- calc(x=satellite, fun=ndvCalc)
+    
+    
+    
+    
+    
+    
+    
     satellite$ndvi <- (satellite[[2]] - satellite[[1]]) / (satellite[[2]] + satellite[[1]])
     satellite$savi <- (1 + 0.5) * ((satellite[[2]] - satellite[[1]])) / (satellite[[2]] + (2.4* satellite[[1]]) + 1)
     satellite$evi <- 2.5* (satellite[[2]] - satellite[[1]]) /(satellite[[2]] + (2.4* satellite[[1]]) + 1)

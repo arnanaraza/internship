@@ -107,7 +107,6 @@ NFI <- function(equation, year, stat) {
   
   all.plots.03 <- plots.fin.03[c('long', 'lat', 'tract', 'plot', 'biomass.total')]
   all.plots.03 <- SpatialPointsDataFrame(all.plots.03, all.plots.03[,1:5], proj4string=crs(coord))
-  writeOGR(obj=all.plots.03, dsn=paste0(mydir,'/mid-results'), driver="ESRI Shapefile", layer='allplots_03fin', overwrite_layer = T)
   
   #do it for 2015
   cummu1 <- 1:length(bio.join.14$plot[bio.join.14$plot==1])
@@ -128,7 +127,6 @@ NFI <- function(equation, year, stat) {
   
   all.plots.14 <- plots.fin.14[c('long', 'lat', 'tract', 'plot', 'biomass.total')]
   all.plots.14 <- SpatialPointsDataFrame(all.plots.14, all.plots.14[,1:5], proj4string=crs(coord))
-  writeOGR(obj=all.plots.14, dsn=paste0(mydir,'/mid-results'), driver="ESRI Shapefile", layer='allplots_14fin', overwrite_layer = T)
   
   if (year == 03) {return (all.plots.03)}
   if (year == 14) {return (all.plots.14)}
