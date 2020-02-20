@@ -1,143 +1,85 @@
-<mxfile host="www.draw.io" modified="2020-02-20T11:34:21.679Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36" version="12.7.2" etag="bYdXiT6cJ-5otkdE0PLb" type="github">
+<mxfile host="www.draw.io" modified="2020-02-20T11:50:21.458Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.116 Safari/537.36" version="12.7.2" etag="8iul42JKv9CZFAYUaeuG" type="github">
   <diagram id="3f5c8b22-a318-8df7-5796-cdc0f7a2d0e1" name="Page-1">
-    <mxGraphModel dx="1673" dy="934" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="#ffffff" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="50" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#d5e8d4;" parent="1" vertex="1">
-          <mxGeometry x="5" y="580" width="840" height="300" as="geometry" />
+        <mxCell id="29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" target="9" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="630" y="280.0000000000002" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
-        <mxCell id="49" value="" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;" parent="1" vertex="1">
-          <mxGeometry x="5" width="840" height="580" as="geometry" />
-        </mxCell>
-        <mxCell id="29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="2" target="9" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="2" value="Resample all" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="550" y="260" width="80" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="3" target="8" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="3" value="Create intermediate covariates" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
-          <mxGeometry x="340" y="180" width="80" height="80" as="geometry" />
+        <mxCell id="27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" target="8" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="420" y="200" as="sourcePoint" />
+          </mxGeometry>
         </mxCell>
         <mxCell id="25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="5" target="7" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="5" value="Mosaic and mask" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
-          <mxGeometry x="130" y="100" width="80" height="80" as="geometry" />
+        <mxCell id="5" value="Calculate textural properties of rasters" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="127" y="230" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="7" target="3" edge="1">
+        <mxCell id="vnuOV63dBf6YRPeid88s-63" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="7" target="16">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="7" value="Resample main rasters" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;" parent="1" vertex="1">
-          <mxGeometry x="240" y="140" width="80" height="80" as="geometry" />
+        <mxCell id="7" value="Co-register and mosaic all rasters&amp;nbsp;" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#ffffff;strokeColor=#000000;" parent="1" vertex="1">
+          <mxGeometry x="237" y="270" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="8" target="2" edge="1">
+        <mxCell id="28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" target="2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="525" y="240" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" target="23" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="730" y="319.9999999999998" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="vnuOV63dBf6YRPeid88s-64" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="11" target="16">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="8" value="Create texture" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
-          <mxGeometry x="445" y="220" width="80" height="80" as="geometry" />
+        <mxCell id="11" value="Calculate plot biomass via allometric equation" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="217" y="450" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="9" target="23" edge="1">
+        <mxCell id="vnuOV63dBf6YRPeid88s-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="12" target="11">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="9" value="Stack all covariates" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
-          <mxGeometry x="650" y="300" width="80" height="80" as="geometry" />
+        <mxCell id="12" value="Estimate tree/plot measurement uncertianty" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="77" y="490" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="10" target="11" edge="1">
+        <mxCell id="vnuOV63dBf6YRPeid88s-65" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="16" target="17">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="10" value="1st data quality check - raw table inspection" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="75" y="310" width="120" height="60" as="geometry" />
+        <mxCell id="16" value="Pair plot biomass &lt;br&gt;to rasters/predictors" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="337" y="340" width="155" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="11" target="12" edge="1">
+        <mxCell id="vnuOV63dBf6YRPeid88s-66" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="17" target="18">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="11" value="biomass computation for &amp;gt;20cm DBH trees" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="205" y="350" width="120" height="60" as="geometry" />
+        <mxCell id="17" value="Model training &lt;br&gt;using RF, SVM, NN" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="487" y="340" width="145" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="12" target="13" edge="1">
+        <mxCell id="vnuOV63dBf6YRPeid88s-67" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.421;entryY=0.983;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="18" target="19">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="12" value="biomass computation for &amp;lt;20cm &amp;gt;10cm DBH trees" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="340" y="390" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="13" target="14" edge="1">
+        <mxCell id="vnuOV63dBf6YRPeid88s-68" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.608;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="18" target="22">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="13" value="total biomass computation of tons/ha&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="475" y="430" width="120" height="60" as="geometry" />
+        <mxCell id="18" value="Leave-one out Cross Validation" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="627" y="340" width="155" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="14" value="2nd data quality check -visual inspection, removal of erroneous plots" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="605" y="470" width="120" height="60" as="geometry" />
+        <mxCell id="19" value="Uncertainty and &lt;br&gt;accuracy &lt;br&gt;assessment" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="652" y="250" width="140" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=auto;orthogonalLoop=1;" parent="1" source="16" target="17" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="16" value="Training data extraction&amp;nbsp;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="65" y="661" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=auto;orthogonalLoop=1;" parent="1" source="17" target="18" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="17" value="Model training" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="195" y="661" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=auto;orthogonalLoop=1;" parent="1" source="18" target="20" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="18" value="Cross validation using LOOCV" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="325" y="661" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=auto;orthogonalLoop=1;" parent="1" source="19" target="21" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="19" value="Accuracy check &lt;br&gt;&amp;nbsp;by MAE, &lt;br&gt;RMSE, R2" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="455" y="739" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="20" target="19" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;jettySize=auto;orthogonalLoop=1;" parent="1" source="20" target="22" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="20" value="Predictions by machine learning method" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="459" y="661" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="21" value="Predictions by &lt;br&gt;covariate combination &lt;br&gt;using best method" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="595" y="739" width="170" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="22" value="Comparison to &lt;br&gt;other biomass models" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="615" y="661" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="23" value="Extracting pixel values" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
-          <mxGeometry x="750" y="340" width="80" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="51" value="&lt;font style=&quot;font-size: 22px&quot;&gt;LEGEND:&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
-          <mxGeometry x="110" y="925" width="40" height="20" as="geometry" />
-        </mxCell>
-        <mxCell id="53" value="Model training, accuracy check, predictions" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="335" y="985" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="54" value="NFI preprocessing" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-          <mxGeometry x="195" y="985" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="55" value="Raster / Covariate preprocessing" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
-          <mxGeometry x="90" y="975" width="80" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="56" value="PRE PROCESSING" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#b85450;fillColor=#f8cecc;" parent="1" vertex="1">
-          <mxGeometry x="545" y="980" width="90" height="70" as="geometry" />
-        </mxCell>
-        <mxCell id="59" value="MODELING PROPER" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#82b366;fillColor=#d5e8d4;" parent="1" vertex="1">
-          <mxGeometry x="655" y="980" width="90" height="70" as="geometry" />
+        <mxCell id="22" value="AGB prediction at national scale" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="632" y="420" width="135" height="60" as="geometry" />
         </mxCell>
         <mxCell id="61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.25;entryX=0.5;entryY=0;jettySize=auto;orthogonalLoop=1;" parent="1" source="60" target="5" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="60" value="Raster input acquisition and pre-processing" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
-          <mxGeometry x="33" y="50" width="80" height="80" as="geometry" />
+        <mxCell id="60" value="Acquire and pre-process individual raster inputs" style="whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="30" y="180" width="80" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
